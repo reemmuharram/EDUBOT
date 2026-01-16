@@ -28,8 +28,8 @@
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/chatbot-assistant.git
-   cd chatbot-assistant
+   git clone https://github.com/reemmuharram/EDUBOT.git
+   cd EDUBOT
    ```
 
 2. **Create a virtual environment**
