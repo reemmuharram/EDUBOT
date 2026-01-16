@@ -1,0 +1,77 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments - CRITICAL!
+venv/
+env/
+ENV/
+rag_env/
+.venv/
+
+# Model files - CRITICAL!
+model/
+models/
+*.safetensors
+*.bin
+*.onnx
+*.pt
+*.pth
+*.h5
+
+# Vectorstore - CRITICAL!
+vectorstore/
+*.faiss
+*.pkl
+
+# HuggingFace cache
+.cache/
+huggingface/
+
+# Notebooks (optional - keep if small)
+.ipynb_checkpoints/
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local
+
+# Streamlit
+.streamlit/
+
+# Deployment (not needed for GitHub)
+Procfile
+runtime.txt
