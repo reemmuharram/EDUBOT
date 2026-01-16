@@ -193,5 +193,5 @@ Reduce `k=3` to `k=2` in `rag/retriever.py` for less context
 If you find this project helpful, please consider giving it a star! ⭐
 
 <div align="center">
-  Made with ❤️ and ☕ by developers, for students
+  Made with ☕ 
 </div>
