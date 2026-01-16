@@ -43,7 +43,6 @@ def load_models():
         
         # Check if vectorstore exists
         if not vectorstore_path.exists() or not (vectorstore_path / "index.faiss").exists():
-            st.info("🔨 Building vectorstore for first time... This will take 5-10 minutes.")
             print("Building vectorstore from dataset...")
             
             # Load dataset
