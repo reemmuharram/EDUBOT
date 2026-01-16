@@ -1,11 +1,9 @@
-# main.py
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from pathlib import Path
 
-# RAG imports
 from rag.embeddings import get_embeddings
 from rag.vectorstore import load_vectorstore
 from rag.retriever import get_retriever
@@ -21,16 +19,14 @@ class QueryRequest(BaseModel):
 
 app = FastAPI(title="RAG Chatbot API")
 
-# Add CORS middleware to allow cross-origin requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify actual origins
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Initialize models and chain
 print("Loading embeddings model...")
 emb_model = get_embeddings()
 
@@ -79,10 +75,8 @@ def query(request: QueryRequest):
         if not request.query.strip():
             raise HTTPException(status_code=400, detail="Query cannot be empty")
         
-        # LCEL chain expects just the question string
         result = retrieval_chain.invoke(request.query)
         
-        # LCEL chain returns a string directly
         return {"answer": result}
     except Exception as e:
         print(f"Error processing query: {str(e)}")
