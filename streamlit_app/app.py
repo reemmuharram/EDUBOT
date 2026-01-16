@@ -34,7 +34,6 @@ if "chain_loaded" not in st.session_state:
 
 @st.cache_resource
 def load_models():
-    """Load all models once and cache them"""
     try:
         print("Loading embeddings model...")
         emb_model = get_embeddings()
@@ -44,7 +43,6 @@ def load_models():
         
         # Check if vectorstore exists
         if not vectorstore_path.exists() or not (vectorstore_path / "index.faiss").exists():
-            st.info("🔨 Building vectorstore for first time... This will take 5-10 minutes.")
             print("Building vectorstore from dataset...")
             
             # Load dataset
