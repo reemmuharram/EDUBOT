@@ -10,8 +10,6 @@
 - 🔍 **Smart Retrieval**: FAISS vector search finds the most relevant information
 - 📊 **22,000+ Q&A Pairs**: Comprehensive educational dataset
 - ⚡ **Fast & Efficient**: Optimized for CPU inference
-- 💙 **Gorgeous Design**: Blue gradient theme with elegant typography
-
 ---
 
 ## 🎬 Quick Start
