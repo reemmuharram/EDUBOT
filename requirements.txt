@@ -9,15 +9,15 @@ langchain-community==0.2.16
 langchain-core==0.2.38
 langchain-text-splitters==0.2.4
 
-# ML/AI
+# ML/AI - Compatible with Python 3.11
 transformers==4.35.0
 sentence-transformers==2.2.2
-torch==2.0.1
-torchvision==0.15.2
-torchaudio==2.0.2
+torch==2.1.0
+torchvision==0.16.0
+torchaudio==2.1.0
 
-# Vector database
-faiss-cpu==1.7.4
+# Vector database - Latest version for Python 3.11+
+faiss-cpu==1.9.0.post1
 
 # Data processing
 pandas==2.0.0
