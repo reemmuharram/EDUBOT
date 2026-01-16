@@ -4,6 +4,11 @@
 
 ![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
 
+## 🚀 Streamlit Demo
+[You can try it here 🤖](https://edubot-ebc2frxtf7jw2su44si2ks.streamlit.app/)
+
+
+
 ## ✨ Features
 
 - 🤖 **AI-Powered Responses**: Uses Google Flan-T5 for natural language understanding
