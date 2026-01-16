@@ -9,23 +9,23 @@ langchain-community==0.2.16
 langchain-core==0.2.38
 langchain-text-splitters==0.2.4
 
-# ML/AI - Compatible with Python 3.11
+# ML/AI - Latest versions compatible with Python 3.13
 transformers==4.35.0
-sentence-transformers==2.2.2
-torch==2.1.0
-torchvision==0.16.0
-torchaudio==2.1.0
+sentence-transformers==3.3.1
+torch
+torchvision
+torchaudio
 
-# Vector database - Latest version for Python 3.11+
-faiss-cpu==1.9.0.post1
+# Vector database - Latest version
+faiss-cpu
 
 # Data processing
-pandas==2.0.0
-numpy==1.24.3
+pandas
+numpy<2.0
 
 # Validation
 pydantic==2.8.2
 
 # Utilities
 python-multipart==0.0.9
-huggingface-hub==0.19.4
+huggingface-hub
