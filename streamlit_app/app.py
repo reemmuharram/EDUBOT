@@ -126,8 +126,6 @@ for message in st.session_state.messages:
 
 if prompt := st.chat_input("Type your question here..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
-'''    with st.chat_message("user"):
-        st.markdown(prompt)'''
     with st.chat_message("assistant"):
         try:
             with st.spinner("🤔 Thinking..."):
