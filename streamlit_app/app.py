@@ -2,10 +2,10 @@ import streamlit as st
 from pathlib import Path
 import sys
 
-# Add parent directory to path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
+# RAG imports
 from rag.embeddings import get_embeddings
 from rag.vectorstore import load_vectorstore, save_vectorstore
 from rag.retriever import get_retriever
@@ -31,9 +31,9 @@ if "chain_loaded" not in st.session_state:
     st.session_state.chain_loaded = False
     st.session_state.retrieval_chain = None
 
-
 @st.cache_resource
 def load_models():
+    """Load all models once and cache them"""
     try:
         print("Loading embeddings model...")
         emb_model = get_embeddings()
@@ -43,6 +43,7 @@ def load_models():
         
         # Check if vectorstore exists
         if not vectorstore_path.exists() or not (vectorstore_path / "index.faiss").exists():
+            st.info("🔨 Building vectorstore for first time... This will take 5-10 minutes.")
             print("Building vectorstore from dataset...")
             
             # Load dataset
@@ -106,6 +107,7 @@ def load_models():
         return None
 
 
+# Load models
 if not st.session_state.chain_loaded:
     with st.spinner("✨ Loading AI models... This may take 10-15 minutes on first run"):
         st.session_state.retrieval_chain = load_models()
@@ -117,21 +119,26 @@ if not st.session_state.chain_loaded:
 
 
 st.markdown("# 📚 Student Assistant")
-st.markdown('<p class="subtitle">Ask me anything and I\'ll help you learn!</p>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle">Ask me anything!</p>', unsafe_allow_html=True)
 
-# Display chat messages
+
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
 if prompt := st.chat_input("Type your question here..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
     with st.chat_message("assistant"):
         try:
             with st.spinner("🤔 Thinking..."):
                 if st.session_state.retrieval_chain is None:
                     raise ValueError("Chain not loaded properly")
+                
                 answer = st.session_state.retrieval_chain.invoke(prompt)
+                
                 answer = str(answer)
             
             st.markdown(answer)
