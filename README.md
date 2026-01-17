@@ -193,9 +193,7 @@ Reduce `k=3` to `k=2` in `rag/retriever.py` for less context
 - **Dataset Size**: 22,571 Q&A pairs
 - **Model Size**: ~900MB (Flan-T5-base)
 - **Embedding Model**: ~90MB (all-MiniLM-L6-v2)
-## ⭐ Star History
 
-If you find this project helpful, please consider giving it a star! ⭐
 
 <div align="center">
   Made with ☕ 
