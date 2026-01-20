@@ -192,7 +192,7 @@ Reduce `k=3` to `k=2` in `rag/retriever.py` for less context
 
 ## 📊 Performance
 
-- **Response Time**: 2-5 seconds per query
+- **Response Time**: ~3 seconds per query
 - **Memory Usage**: ~2GB RAM
 - **Dataset Size**: 22,571 Q&A pairs
 - **Model Size**: ~900MB (Flan-T5-base)
