@@ -139,7 +139,7 @@ chatbot-assistant/
 
 6. **Response** → You get: "You can apply for admission by filling out the application form."
 
-### Tech Stack
+## 👩🏻‍💻 Tech Stack
 
 - **LangChain**: Orchestrates the RAG pipeline
 - **FAISS**: Lightning-fast vector similarity search
