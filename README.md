@@ -2,6 +2,8 @@
 
  Intelligent RAG chatbot designed to help students with their questions. Built with FastAPI, Streamlit, and powered by Google's Flan-T5 model.
 
+ <img width="1919" height="855" alt="Screenshot 2026-01-16 195942" src="https://github.com/user-attachments/assets/8b0b4aef-f273-460b-b9a0-cb0db5a1b2f2" />
+
 ![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
 
 ## 🚀 Streamlit Demo
