@@ -152,7 +152,7 @@ chatbot-assistant/
 ### Update the Dataset
 
 1. Replace `dataset/full_dataset.csv` with your data
-2. Ensure columns are named: `question` and `answer` (or `input` and `target`)
+2. Ensure columns are named: `input` and `target`
 3. Run: `python rebuild_vectorstore.py`
 
 ### Adjust AI Parameters
