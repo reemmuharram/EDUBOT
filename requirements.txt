@@ -1,31 +1,18 @@
-# Core frameworks
 fastapi==0.115.12
 uvicorn[standard]==0.34.0
 streamlit==1.38.0
-
-# LangChain ecosystem
 langchain==0.2.16
 langchain-community==0.2.16
 langchain-core==0.2.38
 langchain-text-splitters==0.2.4
-
-# ML/AI - Let pip resolve compatible versions
 transformers
 sentence-transformers
 torch
 torchvision
 torchaudio
-
-# Vector database
 faiss-cpu
-
-# Data processing
 pandas
 numpy<2.0
-
-# Validation
 pydantic==2.8.2
-
-# Utilities
 python-multipart==0.0.9
 huggingface-hub
