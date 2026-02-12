@@ -5,6 +5,7 @@ import sys
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
+# RAG imports
 from rag.embeddings import get_embeddings
 from rag.vectorstore import load_vectorstore, save_vectorstore
 from rag.retriever import get_retriever
@@ -13,7 +14,7 @@ from rag.chain import create_chain
 from rag.loader import load_q_a_data
 from rag.splitter import split_docs
 from langchain_community.llms import HuggingFacePipeline
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
 import pandas as pd
 
 st.set_page_config(
@@ -40,23 +41,32 @@ def load_models():
         
         print("Checking for vectorstore...")
         vectorstore_path = Path("vectorstore")
+        
+        # Check if vectorstore exists
         if not vectorstore_path.exists() or not (vectorstore_path / "index.faiss").exists():
             print("Building vectorstore from dataset...")
+            
+            # Load dataset
             csv_path = Path("dataset/full_dataset.csv")
             if not csv_path.exists():
                 raise FileNotFoundError(f"Dataset not found at {csv_path}")
             
             df = pd.read_csv(csv_path)
+            
+            # Rename columns if needed
             if 'input' in df.columns and 'target' in df.columns:
                 df = df.rename(columns={'input': 'question', 'target': 'answer'})
+            
+            # Create documents
             print(f"Creating documents from {len(df)} rows...")
             documents = load_q_a_data(df)
             
+            # Split documents
             print("Splitting documents...")
             split_documents = split_docs(documents, chunk_size=500, chunk_overlap=50)
             print(f"Created {len(split_documents)} chunks")
             
-          
+            # Build and save vectorstore
             print("Building vectorstore (this takes time)...")
             save_vectorstore(split_documents, emb_model, "vectorstore")
             st.success("✅ Vectorstore built successfully!")
@@ -73,12 +83,15 @@ def load_models():
         tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-base")
         model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-base", cache_dir="./model")
         
-        llm = HuggingFacePipeline(
+        # Create pipeline with explicit task type
+        pipe = pipeline(
+            task="text2text-generation",
             model=model,
             tokenizer=tokenizer,
-            model_kwargs={"temperature": 0.7, "max_length": 100},
-            pipeline_kwargs={"max_new_tokens": 100}
+            max_new_tokens=100,
+            device=0 if st.secrets.get("use_gpu", False) else -1
         )
+        llm = HuggingFacePipeline(pipeline=pipe)
         
         print("Creating retrieval chain...")
         retrieval_chain = create_chain(llm, retriever, prompt)
@@ -95,7 +108,9 @@ def load_models():
         traceback.print_exc()
         st.error(f"❌ Error loading models: {str(e)}")
         return None
-        
+
+
+# Load models
 if not st.session_state.chain_loaded:
     with st.spinner("✨ Loading AI models... This may take 10-15 minutes on first run"):
         st.session_state.retrieval_chain = load_models()
