@@ -18,9 +18,6 @@ def rebuild_vectorstore():
     df = pd.read_csv(csv_path)
     print(f"✅ Loaded {len(df)} rows from dataset")
     
-    if 'input' in df.columns and 'target' in df.columns:
-        df = df.rename(columns={'input': 'question', 'target': 'answer'})
-    
     print("📄 Creating documents...")
     documents = load_q_a_data(df)
     print(f"✅ Created {len(documents)} documents")
@@ -42,7 +39,6 @@ def rebuild_vectorstore():
     print("   streamlit run streamlit_app/app.py")
     print("   OR")
     print("   python main.py")
-
 
 if __name__ == "__main__":
     try:
