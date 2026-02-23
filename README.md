@@ -9,7 +9,7 @@
 ![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
 
 ## 🚀 Streamlit Demo
-[You can try it here 🤖](https://edubot-ebc2frxtf7jw2su44si2ks.streamlit.app/)
+[You can try it here 🤖](https://edubot-dyjpfh28byx8hjafwkgfkh.streamlit.app/)
 
 
 
