@@ -1,20 +1,10 @@
-# chain.py
-from langchain_core.runnables import RunnablePassthrough, RunnableLambda
+#RETRIEVER CHAIN
+from langchain.chains import RetrievalQA
 
 def create_chain(llm, retriever, prompt):
-    """Create a retrieval QA chain using LCEL"""
-    
-    def format_docs(docs):
-        return "\n\n".join([doc.page_content for doc in docs])
-    
-    # Build chain using LCEL (LangChain Expression Language)
-    chain = (
-        {
-            "context": retriever | RunnableLambda(format_docs),
-            "question": RunnablePassthrough()
-        }
-        | prompt
-        | llm
-    )
-    
-    return chain
+    return RetrievalQA.from_chain_type(
+        llm=llm,
+        chain_type="stuff",
+        retriever=retriever,
+        chain_type_kwargs={"prompt": prompt}
+)

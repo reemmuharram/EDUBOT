@@ -58,7 +58,7 @@ def load_models():
         emb_model = get_embeddings()
 
         print("Loading vector store...")
-        vector_store = load_vectorstore("vectorstore", emb_model)
+        vector_store = load_vectorstore(str(project_root / "vectorstore"), emb_model)
         retriever = get_retriever(vector_store, k=3)
 
         print("Loading prompt template...")
