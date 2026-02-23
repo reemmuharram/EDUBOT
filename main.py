@@ -1,9 +1,11 @@
+# main.py
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import HTMLResponse
-from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from pathlib import Path
+import uvicorn
 
+# RAG imports
+from rag.loader import load_q_a_data
+from rag.splitter import split_docs
 from rag.embeddings import get_embeddings
 from rag.vectorstore import load_vectorstore
 from rag.retriever import get_retriever
@@ -16,75 +18,38 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
 class QueryRequest(BaseModel):
     query: str
 
-
 app = FastAPI(title="RAG Chatbot API")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-print("Loading embeddings model...")
 emb_model = get_embeddings()
 
-print("Loading vector store...")
+# vectorstore
 vector_store = load_vectorstore("vectorstore", emb_model)
 retriever = get_retriever(vector_store, k=3)
 
-print("Loading prompt template...")
+# prompt template
 prompt = prompt_temp()
-
-print("Loading Flan-T5 model...")
+# LLM
 tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-base")
-model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-base", cache_dir="./model")
+model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-base")
 pipe = pipeline("text2text-generation", model=model, tokenizer=tokenizer, max_new_tokens=100)
 llm = HuggingFacePipeline(pipeline=pipe)
 
-print("Creating retrieval chain...")
+# chain
 retrieval_chain = create_chain(llm, retriever, prompt)
 
-print("✅ All models loaded successfully!")
 
-
-@app.get("/", response_class=HTMLResponse)
-def serve_html():
-    """Serve the chatbot UI from templates folder"""
-    template_path = Path("templates/index.html")
-    if template_path.exists():
-        return template_path.read_text()
-    else:
-        return HTMLResponse(
-            content="<h1>Error: templates/index.html not found</h1>", 
-            status_code=404
-        )
-
-
-@app.get("/health")
-def health_check():
-    """Health check endpoint"""
-    return {"status": "ok", "message": "RAG Chatbot API is running"}
-
+@app.get("/")
+def root():
+    return {"message": "RAG Chatbot API is alive!"}
 
 @app.post("/query")
 def query(request: QueryRequest):
-    """Process query through RAG chain"""
+    if not request.query.strip():
+        raise HTTPException(status_code=400, detail="Query cannot be empty")
     try:
-        if not request.query.strip():
-            raise HTTPException(status_code=400, detail="Query cannot be empty")
-        
-        result = retrieval_chain.invoke(request.query)
-        
-        return {"answer": result}
+        result = retrieval_chain.invoke({"query": request.query})
+        return {"answer": result["result"]}
     except Exception as e:
-        print(f"Error processing query: {str(e)}")
-        import traceback
-        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
-
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
