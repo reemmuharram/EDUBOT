@@ -58,7 +58,20 @@ def load_models():
         emb_model = get_embeddings()
 
         print("Loading vector store...")
-        vector_store = load_vectorstore(str(project_root / "vectorstore"), emb_model)
+        vectorstore_path = project_root / "vectorstore"
+        if not (vectorstore_path / "index.faiss").exists():
+            print("Vectorstore not found, rebuilding from dataset...")
+            import pandas as pd
+            from rag.loader import load_q_a_data
+            from rag.splitter import split_docs
+            from rag.vectorstore import save_vectorstore
+            csv_path = project_root / "dataset" / "full_dataset.csv"
+            df = pd.read_csv(csv_path)
+            documents = load_q_a_data(df)
+            split_documents = split_docs(documents, chunk_size=500, chunk_overlap=50)
+            save_vectorstore(split_documents, emb_model, str(vectorstore_path))
+            print("Vectorstore built successfully.")
+        vector_store = load_vectorstore(str(vectorstore_path), emb_model)
         retriever = get_retriever(vector_store, k=3)
 
         print("Loading prompt template...")
