@@ -88,7 +88,7 @@ Open your browser at: **http://localhost:8000**
 ## 📁 Project Structure
 
 ```
-chatbot-assistant/
+EDUBOT/
 │
 ├── dataset/
 │   └── full_dataset.csv          # Your Q&A training data (22,571 pairs)
