@@ -134,10 +134,10 @@ if prompt := st.chat_input("Type your question..."):
                     raise ValueError("Chain not loaded properly")
                 
                 # LCEL chain expects just the question string
-                answer = st.session_state.retrieval_chain.invoke(prompt)
+                result = st.session_state.retrieval_chain.invoke({"query": prompt})
                 
-                # LCEL returns string directly
-                answer = str(answer)
+                # RetrievalQA returns a dict with "result" key
+                answer = result["result"] if isinstance(result, dict) else str(result)
             
             st.markdown(answer)
             st.session_state.messages.append({"role": "assistant", "content": answer})
